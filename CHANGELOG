@@ -1,2 +1,5 @@
 == 1.0.0 - 24 February 2011
 * Public release
+
+== 1.0.1 - 17 June 2011
+* Fix for infinite loop bug found and fixed by thales
