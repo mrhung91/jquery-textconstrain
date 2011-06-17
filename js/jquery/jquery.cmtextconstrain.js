@@ -45,7 +45,8 @@
                             var charPointer = opts.restrict['limit'];
                             var shortString = $this.text().substr(0,opts.restrict['limit']);
                             var nextChar = '';
-                            while(nextChar != ' '){
+                            var stringLength = $this.text().length;
+                            while(nextChar != ' ' && stringLength > charPointer) {
                                 shortString += nextChar;
                                 nextChar = $elemClone.text().charAt(charPointer++);
                             }
