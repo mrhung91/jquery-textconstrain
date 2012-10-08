@@ -1,9 +1,9 @@
 /**
  * Plugin: jQuery Text-constrain, jquery.cmtextconstrain.js
- * Copyright: Copyright (c) 2011 CMGdigital
- * Version: 1.0.0
+ * Copyright: Copyright (c) 2011-2012 CMGdigital
+ * Version: 1.0.1
  * Author: David A. Enete
- * Date: 24 February 2011
+ * Date: 20 September 2012
  * Description: jQuery Text-constrain plugin - A jQuery plugin to allow text elements on a page to be constrained by size.
  */
 
@@ -28,59 +28,70 @@
                     $this.hide();
                     var $elemClone = $('#' + cloneID);
                     
-                    // create constrained string
-                    if(opts.restrict['type'] == 'words'){
-                        var wordArr = $elemClone.text().split(/\s+/);
-                        if(wordArr.length <= opts.restrict['limit']){
-                            $this.cmtextconstrain('destroy');
-                            return;
-                        } else {
-                            var shortString = wordArr.slice(0,opts.restrict['limit']).join(' ');
-                        }
-                    } else if(opts.restrict['type'] == 'chars'){
-                        if($this.text().length <= opts.restrict['limit']){
-                            $this.cmtextconstrain('destroy');
-                            return;
-                        } else {
-                            var charPointer = opts.restrict['limit'];
-                            var shortString = $this.text().substr(0,opts.restrict['limit']);
-                            var nextChar = '';
-                            var stringLength = $this.text().length;
-                            while(nextChar != ' ' && stringLength > charPointer) {
-                                shortString += nextChar;
-                                nextChar = $elemClone.text().charAt(charPointer++);
+                    if(opts.restrict['type'] !== 'height'){
+                        // create constrained string
+                        if(opts.restrict['type'] === 'words'){
+                            var wordArr = $elemClone.text().split(/\s+/);
+                            if(wordArr.length <= opts.restrict['limit']){
+                                $this.cmtextconstrain('destroy');
+                                return;
+                            } else {
+                                var shortString = wordArr.slice(0,opts.restrict['limit']).join(' ');
+                            }
+                        } else if(opts.restrict['type'] === 'chars'){
+                            if($this.text().length <= opts.restrict['limit']){
+                                $this.cmtextconstrain('destroy');
+                                return;
+                            } else {
+                                var charPointer = opts.restrict['limit'];
+                                var shortString = $this.text().substr(0,opts.restrict['limit']);
+                                var nextChar = '';
+                                var stringLength = $this.text().length;
+                                while(nextChar != ' ' && stringLength > charPointer) {
+                                    shortString += nextChar;
+                                    nextChar = $elemClone.text().charAt(charPointer++);
+                                }
                             }
                         }
+                        shortString += opts.trailingString;
+                        $elemClone.text(shortString);
+                        $elemClone.append(
+                            $('<a />', {
+                                'href': 'javascript:void(0);',
+                                'class': 'cmExpose ' + opts.showControl['addclass'],
+                                'title': opts.showControl['title'],
+                                'html': opts.showControl['string']
+                            })
+                        );
+                        $this.append(
+                            $('<a />', {
+                                'href': 'javascript:void(0);',
+                                'class': 'cmConstrain ' + opts.hideControl['addclass'],
+                                'title': opts.hideControl['title'],
+                                'html': opts.hideControl['string']
+                            })
+                        );                        
+                        // need to implement delay if event is hover / mouseover
+                        $elemClone.find('.cmExpose').bind(opts.event, function(){
+                            _expose($this,$elemClone);
+                            opts.onExpose.call(this);
+                        });
+                        $this.find('.cmConstrain').bind(opts.event, function(){
+                            _expose($elemClone,$this);
+                            opts.onConstrain.call(this);
+                        });
+                    } else {
+                        //by height
+                        $elemClone.css({
+                            'overflow': 'hidden',
+                            'position': 'relative'
+                        }).height(opts.restrict['limit']).append(
+                            $('<div />', {
+                                className: 'cmTrailingString',
+                                html: opts.trailingString
+                            })
+                        );
                     }
-                    shortString += opts.trailingString;
-                    
-                    $elemClone.text(shortString);
-                    $elemClone.append(
-                        $('<a />', {
-                            'href': 'javascript:void(0);',
-                            'class': 'cmExpose ' + opts.showControl['addclass'],
-                            'title': opts.showControl['title'],
-                            'html': opts.showControl['string']
-                        })
-                    );
-                    $this.append(
-                        $('<a />', {
-                            'href': 'javascript:void(0);',
-                            'class': 'cmConstrain ' + opts.hideControl['addclass'],
-                            'title': opts.hideControl['title'],
-                            'html': opts.hideControl['string']
-                        })
-                    ); 
-                    
-                    // need to implement delay if event is hover / mouseover
-                    $elemClone.find('.cmExpose').bind(opts.event, function(){
-                        _expose($this,$elemClone);
-                        opts.onExpose.call(this);
-                    });
-                    $this.find('.cmConstrain').bind(opts.event, function(){
-                        _expose($elemClone,$this);
-                        opts.onConstrain.call(this);
-                    });
                 }
             });
         },
@@ -118,7 +129,7 @@
         event: 'click',
         onExpose: function(){},
         onConstrain: function(){},
-        restrict: {type: 'chars', limit: 121}, // ['chars', 'words']
+        restrict: {type: 'chars', limit: 121}, // ['chars', 'words', 'height']
         showControl: {string: '[&nbsp;+&nbsp;]', title: 'Show More', addclass: 'cmShowHide'},
         hideControl: {string: '[&nbsp;-&nbsp;]', title: 'Show Less', addclass: 'cmShowHide'},
         trailingString: '...'

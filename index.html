@@ -10,11 +10,11 @@
         ol, ul {list-style: none}
         .cmFloatLeft{float:left}
         .cmFloatRight{float:right}
-        #main{margin:1em;width:640px}
+        #bysize,#bylength{margin:1em;width:640px;padding-top:1em;border-top:1px solid #000}
         .hidden{display:none;}
         .cmConstrainContainer{background-color:#f00}
         .cmShowHide{text-decoration:none}
-        .explanation{margin:1em;padding-bottom:1em;border-bottom:1px solid #000}
+        .explanation{margin:1em}
         .explanation a{color:#33f}
         .explanation ul{padding-top:.5em}
         .explanation ul li{padding-bottom:.5em}
@@ -22,6 +22,26 @@
         p{margin:.5em 0}
         span.note{color:#666}
         h1{margin:.5em}
+        #bysize{width:300px}
+        .cmTrailingString{
+background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(75%,rgba(0,0,0,1)), color-stop(100%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 75%,rgba(0,0,0,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 75%,rgba(0,0,0,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 75%,rgba(0,0,0,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 75%,rgba(0,0,0,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+            position:absolute;
+            bottom:0;
+            right:0;
+            width:100%;
+            padding:1em .5em 0 .5em;
+            text-align:right;
+            text-decoration:none;
+            color:#fff;
+            text-shadow: 1px 1px 3px #000000;
+            filter: dropshadow(color=#000000, offx=0, offy=0);
+        }
         </style>
     </head>
     <body>
@@ -32,7 +52,7 @@
     event: 'click', <span class="note">// for future extensibility to allow other events</span>
     onExpose: function(){}, <span class="note">// a function to be run once the element is exposed</span>
     onConstrain: function(){}, <span class="note">// a function to be run once the element is constrained</span>
-    restrict: {type: 'words', limit: 6}, <span class="note">// type can be 'words' or 'chars'</span>
+    restrict: {type: 'words', limit: 6}, <span class="note">// type can be 'words', 'chars', or 'height' (height limit is in pixels)</span>
     showControl: {string: '[&nbsp;+&nbsp;]', title: 'Show More', addclass: 'cmShowHide'}, <span class="note">// element shown to expose</span>
     hideControl: {string: '[&nbsp;-&nbsp;]', title: 'Show Less', addclass: 'cmShowHide'}, <span class="note">// element shown to constrain</span>
     trailingString: '...' <span class="note">// string to show at end of truncated text</span>
@@ -43,11 +63,19 @@
                 <li><a href="js/jquery/jquery.cmtextconstrain.js" target="_blank">View jquery.cmtextconstrain.js</a></li>
             </ul>
         </div>
-        <div id="main">
+        <div id="bylength">
             <h2 id="cmTextHeaderElement" class="cmTextElement">Shorter Than the Limit Header</h2>
             <p class="cmTextElement">No ID given. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nulla justo, condimentum dapibus vulputate ac, feugiat in magna. Morbi congue, lectus eu tincidunt gravida, velit sem rutrum dolor, id convallis mauris dui vitae orci. Integer ornare commodo vulputate. Vivamus eget dignissim arcu. Sed non odio ac massa faucibus malesuada. Donec orci ante, ullamcorper sed consequat sit amet, malesuada vitae orci. Proin ut sapien at quam tristique malesuada vitae quis nisl. Cras et nunc sapien, commodo imperdiet erat. Sed non quam quis massa ultricies faucibus sed nec tellus. Nullam pellentesque sodales egestas. Aenean accumsan volutpat lectus, eget tincidunt diam pellentesque a. Donec lacinia eleifend nibh non tempus.</p>
             <h2 id="cmTextHeaderElement" class="cmTextElement">Longer Than The Limit Header will be Constrained</h2>
             <p id="cmTextParagraph" class="cmTextElement">Random-hyphen! This is the text to which we will be applying the constraint. It is a paragraph element. Sed non quam quis massa ultricies faucibus sed nec tellus. Nullam pellentesque sodales egestas. Aenean accumsan volutpat lectus, eget tincidunt diam pellentesque a. Donec lacinia eleifend nibh non tempus.</p>
+        </div>
+        <div id="bysize">
+            <div id="bysizecontent">
+                <h2>Constraining by Size</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nulla justo, <em>condimentum dapibus vulputate</em> ac, feugiat in magna. Morbi congue, lectus eu tincidunt gravida, velit sem rutrum dolor, id convallis mauris dui vitae orci.</p>
+                <p>Integer ornare commodo vulputate. Vivamus eget dignissim arcu. Sed non odio ac massa faucibus malesuada. Donec orci ante, ullamcorper sed consequat sit amet, malesuada vitae orci.</p>
+                <p>Proin ut sapien at quam tristique malesuada vitae quis nisl. Cras et nunc sapien, <strong>commodo imperdiet erat</strong>. Sed non quam quis massa ultricies faucibus sed nec tellus. Nullam pellentesque sodales egestas. Aenean accumsan volutpat lectus, eget tincidunt diam pellentesque a. Donec lacinia eleifend nibh non tempus.</p>
+            </div>
         </div>
 
 
@@ -59,6 +87,11 @@ $(document).ready(function(){
         restrict: {type: 'words', limit: 6},
         showControl: {string: '[&nbsp;+&nbsp;]', title: 'Show More', addclass: 'cmShowHide'},
         hideControl: {string: '[&nbsp;-&nbsp;]', title: 'Show Less', addclass: 'cmShowHide'},
+        trailingString: '...'
+    });
+    $('#bysizecontent').cmtextconstrain({
+        restrict: {type: 'height', limit: 275},
+        //trailingString: '<a href="repl_href">Read More...</a>'
         trailingString: '...'
     });
 });
