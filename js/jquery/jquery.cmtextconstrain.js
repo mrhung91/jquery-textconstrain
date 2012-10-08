@@ -55,8 +55,22 @@
                     shortString += opts.trailingString;
                     
                     $elemClone.text(shortString);
-                    $elemClone.append('&nbsp;<a href="javascript:void(0);" class="cmExpose ' + opts.showControl['addclass'] + '" title="' + opts.showControl['title'] + '">' + opts.showControl['string'] + '</a>');
-                    $this.append('&nbsp;<a href="javascript:void(0);" class="cmConstrain ' + opts.hideControl['addclass'] + '" title="' + opts.hideControl['title'] + '">' + opts.hideControl['string'] + '</a>');
+                    $elemClone.append(
+                        $('<a />', {
+                            'href': 'javascript:void(0);',
+                            'class': 'cmExpose ' + opts.showControl['addclass'],
+                            'title': opts.showControl['title'],
+                            'html': opts.showControl['string']
+                        })
+                    );
+                    $this.append(
+                        $('<a />', {
+                            'href': 'javascript:void(0);',
+                            'class': 'cmConstrain ' + opts.hideControl['addclass'],
+                            'title': opts.hideControl['title'],
+                            'html': opts.hideControl['string']
+                        })
+                    ); 
                     
                     // need to implement delay if event is hover / mouseover
                     $elemClone.find('.cmExpose').bind(opts.event, function(){
