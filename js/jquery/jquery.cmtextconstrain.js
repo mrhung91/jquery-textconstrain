@@ -90,7 +90,7 @@
                 data = $this.data('cmtextconstrain');
                 if(data){
                     $('#' + $this.attr('id') + '_clone').remove();
-                    $this.show().removeData('cmtextconstrain');
+                    $this.show().removeData('cmtextconstrain').find('.cmConstrain').remove();
                 }
             })
         }
